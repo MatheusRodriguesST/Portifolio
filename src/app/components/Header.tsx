@@ -5,10 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 const Header = () => {
-  const introRef = useRef(null);
-  const sobreRef = useRef(null);
-  const projetosRef = useRef(null);
-  const experienceRef = useRef(null);
+  const introRef = useRef<HTMLDivElement | null>(null);
+  const sobreRef = useRef<HTMLElement | null>(null);
+  const projetosRef = useRef<HTMLElement | null>(null);
+  const experienceRef = useRef<HTMLElement | null>(null);
 
   const sectionRefs = [introRef, sobreRef, projetosRef, experienceRef];
   const [activeSteps, setActiveSteps] = useState([true, false, false, false]);
