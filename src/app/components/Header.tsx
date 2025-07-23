@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, RefObject } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -10,12 +10,14 @@ const Header = () => {
   const projetosRef = useRef<HTMLDivElement>(null);
   const experienceRef = useRef<HTMLDivElement>(null);
 
-  const sectionRefs: RefObject<HTMLDivElement>[] = [
+  // Ajuste na tipagem para aceitar null
+  const sectionRefs: Array<React.RefObject<HTMLDivElement>> = [
     introRef,
     sobreRef,
     projetosRef,
     experienceRef,
   ];
+
   const [activeSteps, setActiveSteps] = useState([true, false, false, false]);
 
   useEffect(() => {
@@ -57,7 +59,6 @@ const Header = () => {
 
     handleScroll();
     window.addEventListener("scroll", handleScroll);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
       sectionRefs.forEach((ref) => {
