@@ -1,16 +1,21 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, RefObject } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 const Header = () => {
-  const introRef = useRef<HTMLDivElement | null>(null);
-  const sobreRef = useRef<HTMLElement | null>(null);
-  const projetosRef = useRef<HTMLElement | null>(null);
-  const experienceRef = useRef<HTMLElement | null>(null);
+  const introRef = useRef<HTMLDivElement>(null);
+  const sobreRef = useRef<HTMLDivElement>(null);
+  const projetosRef = useRef<HTMLDivElement>(null);
+  const experienceRef = useRef<HTMLDivElement>(null);
 
-  const sectionRefs = [introRef, sobreRef, projetosRef, experienceRef];
+  const sectionRefs: RefObject<HTMLDivElement>[] = [
+    introRef,
+    sobreRef,
+    projetosRef,
+    experienceRef,
+  ];
   const [activeSteps, setActiveSteps] = useState([true, false, false, false]);
 
   useEffect(() => {
@@ -39,7 +44,6 @@ const Header = () => {
             entry.target.classList.add("animate-slide-up");
             entry.target.classList.remove("opacity-0", "translate-y-10");
           } else {
-            // Opcional: reverter para o estado inicial se sair da viewport
             entry.target.classList.remove("animate-slide-up");
           }
         });
@@ -51,24 +55,24 @@ const Header = () => {
       if (ref.current) observer.observe(ref.current);
     });
 
-    // Trigger initial scroll to set active steps
     handleScroll();
     window.addEventListener("scroll", handleScroll);
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
       sectionRefs.forEach((ref) => {
         if (ref.current) observer.unobserve(ref.current);
       });
     };
-  }, []);
+  }, [sectionRefs]);
 
   return (
     <>
-      <div className="fixed top-60 ml-[7%] transform -translate-x-1/2 flex flex-col gap-15 z-50 max-md:hidden ">
+      <div className="fixed top-60 ml-[7%] transform -translate-x-1/2 flex flex-col gap-15 z-50 max-md:hidden">
         {activeSteps.map((isActive, index) => (
           <div
             key={index}
-            className={`w-15 h-15 rounded-full transition-all duration-300 border-2 md:max-w-lg  ${
+            className={`w-15 h-15 rounded-full transition-all duration-300 border-2 md:max-w-lg ${
               isActive ? "bg-black scale-125" : "bg-transparent scale-100"
             }`}
           />
@@ -85,28 +89,30 @@ const Header = () => {
           Eu sou um web developer que ajuda as pessoas a botarem suas ideias em execução.
         </h2>
         <Link href="/contato">
-          <button
-            className="w-80 h-15 bg-black rounded-4xl mt-10 text-white text-2xl transition-all duration-700 ease-in-out hover:w-100 hover:scale-105 hover:shadow-lg"
-          >
+          <button className="w-80 h-15 bg-black rounded-4xl mt-10 text-white text-2xl transition-all duration-700 ease-in-out hover:w-100 hover:scale-105 hover:shadow-lg">
             Entre em Contato
           </button>
         </Link>
 
-        <div ref={sobreRef} className="mt-15 opacity-0 translate-y-10 transition-all duration-700 ease-out">
+        <div
+          ref={sobreRef}
+          className="mt-15 opacity-0 translate-y-10 transition-all duration-700 ease-out"
+        >
           <h1 className="text-4xl">Sobre</h1>
           <h1 className="text-2xl mt-5 ml-1 w-130 max-md:w-80">
             Um jovem programador de 17 anos que tem uma base sólida e experiência de 2 anos no desenvolvimento web fullstack.
           </h1>
           <Link href="/sobre">
-          <button
-            className="w-50 h-12 mt-7 bg-amber-50 text-black rounded-4xl text-2xl border-black ml-5 transition-all duration-300 ease-in-out hover:translate-x-1 hover:scale-105 hover:shadow-2xl"
-          >
-            Saber Mais
-          </button>
+            <button className="w-50 h-12 mt-7 bg-amber-50 text-black rounded-4xl text-2xl border-black ml-5 transition-all duration-300 ease-in-out hover:translate-x-1 hover:scale-105 hover:shadow-2xl">
+              Saber Mais
+            </button>
           </Link>
         </div>
 
-        <div ref={projetosRef} className="mt-20 opacity-0 translate-y-10 transition-all duration-700 ease-out">
+        <div
+          ref={projetosRef}
+          className="mt-20 opacity-0 translate-y-10 transition-all duration-700 ease-out"
+        >
           <h1 className="text-3xl">Projetos</h1>
           <div className="mt-10">
             <div className="flex flex-row justify-between items-center max-md:w-[100%]">
@@ -123,7 +129,10 @@ const Header = () => {
           </div>
         </div>
 
-        <div ref={experienceRef} className="mt-20 opacity-0 translate-y-10 transition-all duration-700 ease-out">
+        <div
+          ref={experienceRef}
+          className="mt-20 opacity-0 translate-y-10 transition-all duration-700 ease-out"
+        >
           <h1 className="text-3xl">Conhecimento</h1>
           <h1 className="text-3xl mt-8 max-md:ml-2 max-md:text-2xl max-md:w-80">
             Tecnologias e Ferramentas que Domino
